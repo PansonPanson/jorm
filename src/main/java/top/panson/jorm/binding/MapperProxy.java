@@ -1,5 +1,7 @@
 package top.panson.jorm.binding;
 
+import top.panson.jorm.session.SqlSession;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -15,15 +17,12 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     private static final long serialVersionUID = -5739508078954644013L;
 
-    /**
-     * key： 接口名 + 方法名
-     * value:
-     */
-    private Map<String, String> sqlSession;
+
+    private SqlSession sqlSession;
 
     private final Class<T> mapperInterface;
 
-    public MapperProxy(Map<String, String> sqlSession, Class<T> mapperInterface) {
+    public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface) {
         this.sqlSession = sqlSession;
         this.mapperInterface = mapperInterface;
     }
@@ -33,7 +32,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
         if(Objects.class.equals(method.getDeclaringClass())) {
             return method.invoke(this, args);
         } else {
-            return "调用了代理方法：" + sqlSession.get(mapperInterface.getName() + "." + method.getName());
+            return sqlSession.selectOne(method.getName(), args);
         }
     }
 }
