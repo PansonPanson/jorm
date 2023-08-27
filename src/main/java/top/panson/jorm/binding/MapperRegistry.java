@@ -1,6 +1,7 @@
 package top.panson.jorm.binding;
 
 import cn.hutool.core.lang.ClassScanner;
+import top.panson.jorm.session.Configuration;
 import top.panson.jorm.session.SqlSession;
 
 import java.util.HashMap;
@@ -12,6 +13,12 @@ import java.util.Set;
  * @create 2023-08-15
  */
 public class MapperRegistry {
+
+    private Configuration config;
+
+    public MapperRegistry(Configuration config) {
+        this.config = config;
+    }
 
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 

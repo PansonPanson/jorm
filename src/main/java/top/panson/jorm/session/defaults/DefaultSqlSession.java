@@ -2,6 +2,7 @@ package top.panson.jorm.session.defaults;
 
 import com.alibaba.fastjson.JSON;
 import top.panson.jorm.binding.MapperRegistry;
+import top.panson.jorm.session.Configuration;
 import top.panson.jorm.session.SqlSession;
 
 /**
@@ -10,10 +11,10 @@ import top.panson.jorm.session.SqlSession;
  */
 public class DefaultSqlSession implements SqlSession {
 
-    private MapperRegistry mapperRegistry;
+    private Configuration configuration;
 
-    public DefaultSqlSession(MapperRegistry mapperRegistry) {
-        this.mapperRegistry = mapperRegistry;
+    public DefaultSqlSession(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
@@ -28,6 +29,10 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <T> T getMapper(Class<T> type) {
-        return mapperRegistry.getMapper(type, this);
+        return configuration.getMapper(type, this);
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 }
