@@ -5,18 +5,16 @@ import top.panson.jorm.session.defaults.DefaultSqlSessionFactory;
 
 import java.io.Reader;
 
-/**
- * @author Panson
- * @create 2023-08-15
- */
+
 public class SqlSessionFactoryBuilder {
 
     public SqlSessionFactory build(Reader reader) {
-        XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder();
-        return build(xmlConfigBuilder.parse(reader));
+        XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder(reader);
+        return build(xmlConfigBuilder.parse());
     }
 
     public SqlSessionFactory build(Configuration config) {
         return new DefaultSqlSessionFactory(config);
     }
+
 }

@@ -1,14 +1,10 @@
 package top.panson.jorm.session.defaults;
 
-import com.alibaba.fastjson.JSON;
-import top.panson.jorm.binding.MapperRegistry;
+import top.panson.jorm.mapping.MappedStatement;
 import top.panson.jorm.session.Configuration;
 import top.panson.jorm.session.SqlSession;
 
-/**
- * @author Panson
- * @create 2023-08-15
- */
+
 public class DefaultSqlSession implements SqlSession {
 
     private Configuration configuration;
@@ -24,7 +20,8 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <T> T selectOne(String statement, Object parameter) {
-        return (T) ("你被代理了！" + "方法：" + statement + " 入参：" + JSON.toJSONString(parameter));
+        MappedStatement mappedStatement = configuration.getMappedStatement(statement);
+        return (T) ("你被代理了！" + "\n方法：" + statement + "\n入参：" + parameter + "\n待执行SQL：" + mappedStatement.getSql());
     }
 
     @Override
@@ -32,7 +29,9 @@ public class DefaultSqlSession implements SqlSession {
         return configuration.getMapper(type, this);
     }
 
+    @Override
     public Configuration getConfiguration() {
         return configuration;
     }
+
 }
